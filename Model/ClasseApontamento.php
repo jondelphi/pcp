@@ -50,7 +50,7 @@ class Apontamento
     public function divisor()
     {
         $ha = new DateTime('now');
-        $hi = new Datetime('07:40');
+        $hi = new Datetime('07:30');
         if ($ha->format('H:i') > $hi->format('H:i')) {
             $int = $hi->diff($ha);
             $horas = ($int->format('%H')) * 60;
@@ -731,7 +731,6 @@ class Apontamento
     public function atualizavalores()
     {
         try{
-        $korp = ConexaoKorp::getConnectionKorp();
         $mysql = ConexaoMysql::getConnectionMysql();
         $sel = "SELECT codigo,codigobase from tbproduto";
         $sel = $mysql->prepare($sel);

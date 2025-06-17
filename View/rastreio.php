@@ -5,7 +5,7 @@
     <form action="index.php" method="post" class="m-2 p-2" style="background-color: #333; max-width: fit-content;">
         <div class="input-group input-group-sm m-2 p-2">
            <!--  <label for="busca" class="input-group-text input-group-sm">ODF ou Etiqueta</label> -->
-            <input type="text" name="busca" class="form-control form-control-sm" id="etiqueta" required minlength="18" maxlength="18">
+            <input type="text" name="busca" class="form-control form-control-sm" autofocus id="etiqueta" required minlength="18" maxlength="18">
             <input type="submit" value="Busca" class="btn btn-success btn-sm">
         </div>
     </form>
