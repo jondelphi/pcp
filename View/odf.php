@@ -34,6 +34,9 @@
             </fieldset>
         </form>
         <!-- formulario -->
+        <div class="container p-2 m-2" hx-trigger="load" hx-get="http://10.1.2.251/api2/getColetaDia/<?php echo $_SESSION['pcpAPI']['diaapont']?>">
+        
+        </div>
     </div>
     <div class="container p-2 m-2">
         <?php
@@ -41,5 +44,31 @@
         $odf = new ODF;
         $odf->mostraODF($conn,$_SESSION['pcpAPI']['sqlODF'],$_SESSION['pcpAPI']['filtro']);
         ?>
+    </div>
+    <div class="container">
+    <button class="btn btn-primary btn-sm" id="cdODF" onclick="coletas()"><i class="bi bi-wrench"></i>Atualiza ODF</button>
+        <script>
+     async function coletas() {
+       const bt = document.getElementById('cdODF')
+       bt.disabled  = true; 
+    
+        const dia = "<?php echo $_SESSION['pcpAPI']['diaapont']; ?>";
+        const url = `http://10.1.2.251/api/cadodf/${dia}`;
+        
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                bt.disabled  = false
+                location.reload()
+            
+            } else {
+                alert('Erro ao atualizar ODFs');
+            }
+        } catch (error) {
+            console.error('Erro ao fazer a requisição:', error);
+            alert('Erro ao conectar com o servidor');
+        }
+    }
+  </script>
     </div>
 </div>

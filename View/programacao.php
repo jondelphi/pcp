@@ -23,9 +23,9 @@
                 </div>
                 <div class="input-group input-group-sm p-1 m-1">
                     <label for="horainicio" class="input-group-text">Hora Início</label>
-                    <input type="time" value="07:40" name="horainicio" class="form form-control" required >
+                    <input type="time" value="07:30" name="horainicio" class="form form-control" required >
                     <label for="horafim" class="input-group-text">Hora Fim</label>
-                    <input type="time" value="17:10" name="horafim" class="form form-control"  required>
+                    <input type="time" value="17:15" name="horafim" class="form form-control"  required>
                     <label for="obs" class="input-group-text">Observação</label>
                     <input type="text" name="obs" class="form form-control" >
                  
@@ -39,6 +39,10 @@
         </form>
         <!-- formulario -->
         <a href="View/exportaprogramacao.php" target="_blank" class="btn btn-primary">Exportar</a>
+        <a href="control/relatorioProgramacao.php" class="btn btn-primary">Relatorio</a>
+    </div>
+    <div class="container" id="ultimodia">
+
     </div>
     <div class="container">
         <div class="container m-2 p-2">
@@ -57,3 +61,17 @@
         </div>
     </div>
 </div>
+<script>
+    async function ultimo(){
+        const url=`http://10.1.2.251/api/ultimodiaProgramado`
+        const d = document.getElementById('ultimodia')
+        const send = await fetch(url)
+        const response = await send.json()
+        console.log(response)
+        const al = document.createElement('p')
+        al.className = 'alert alert-warning'
+        al.innerText = ` Último dia programado: ${response.ultimo.substring(8,11)}/${response.ultimo.substring(5,7)}/${response.ultimo.substring(0,4)}`
+        d.appendChild(al)
+    }
+    ultimo()
+</script>

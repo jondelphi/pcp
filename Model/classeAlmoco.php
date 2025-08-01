@@ -62,86 +62,86 @@ class Almoco
     }
     public function qualintervalosaiu($hora){
         switch ($hora) {
-            case $hora < '07:40:00':
+            case $hora < '07:30:00':
                 return 0;
                 break;
-            case $hora < '08:41':
+            case $hora < '08:31':
                 return 1;
                 break;
-            case $hora < '09:41':
+            case $hora < '09:31':
                 return 2;
                 break;
-            case $hora < '10:41':
+            case $hora < '10:31':
                 return 3;
                 break;
-            case $hora < '11:41':
+            case $hora < '11:31':
                 return 4;
                 break;
-            case $hora < '12:41':
+            case $hora < '12:31':
                 return 5;
                 break;
-            case $hora < '13:41':
+            case $hora < '13:31':
                 return 6;
                 break;
-            case $hora < '14:41':
+            case $hora < '14:31':
                 return 7;
                 break;
-            case $hora < '15:41':
+            case $hora < '15:31':
                 return 8;
                 break;
-            case $hora < '16:41':
+            case $hora < '16:31':
                 return 9;
                 break;
-            case $hora < '17:41':
+            case $hora < '17:31':
                 return 10;
                 break;
-            case $hora < '18:41':
+            case $hora < '18:31':
                 return 11;
                 break;
-            case $hora >= '18:41':
+            case $hora >= '18:31':
                 return 12;
                 break;
         }
     }
     public function qualintervaloentrou($hora){
         switch ($hora) {
-            case $hora < '07:40:00':
+            case $hora < '07:30:00':
                 return 0;
                 break;
-            case $hora < '08:41':
+            case $hora < '08:31':
                 return 1;
                 break;
-            case $hora < '09:41':
+            case $hora < '09:31':
                 return 2;
                 break;
-            case $hora < '10:41':
+            case $hora < '10:31':
                 return 3;
                 break;
-            case $hora < '11:41':
+            case $hora < '11:31':
                 return 4;
                 break;
-            case $hora < '12:41':
+            case $hora < '12:31':
                 return 5;
                 break;
-            case $hora < '13:41':
+            case $hora < '13:31':
                 return 6;
                 break;
-            case $hora < '14:41':
+            case $hora < '14:31':
                 return 7;
                 break;
-            case $hora < '15:41':
+            case $hora < '15:31':
                 return 8;
                 break;
-            case $hora < '16:41':
+            case $hora < '16:31':
                 return 9;
                 break;
-            case $hora < '17:41':
+            case $hora < '17:31':
                 return 10;
                 break;
-            case $hora < '18:41':
+            case $hora < '18:31':
                 return 11;
                 break;
-            case $hora >= '18:41':
+            case $hora >= '18:31':
                 return 12;
                 break;
         }

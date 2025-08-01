@@ -5,7 +5,7 @@
                 <a href="teste.php" target="_blank" rel="noopener noreferrer">
                     <img src="content/colorido.png" alt="Braslar Eletro" style="max-width:100px;">
                 </a>
-                
+
             </figure>
             <div class="container-fluid">
                 <a class="navbar-brand" href="Control/placar.php">Placar</a>
@@ -21,9 +21,6 @@
                             <a class="nav-link" href="Control/odf.php">ODF</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="Control/linhas.php">Linhas</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="Control/audita.php">Auditoria</a>
                         </li>
                         <li class="nav-item">
@@ -36,12 +33,12 @@
                             <a class="nav-link" href="Control/rastreio.php">Rastreio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="Control/carga.php">CARGA</a>
+                            <a class="nav-link" href="http://10.1.2.251/logistica/">CARGA</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="Control/almoco.php">Almoço</a>
+                            <a class="nav-link" href="Control/justificativa.php">Justificativa</a>
                         </li>
-                         <li class="nav-item">
+                        <li class="nav-item">
                             <a class="nav-link" href="http://10.1.2.251/pcppecas/" target="_blank">SUB-PRODUTO</a>
                         </li>
                     </ul>
@@ -69,11 +66,11 @@
                     <div class="input-group input-group-sm">
                         <label for="dia" class="input-group-text">Muda Data</label>
                         <?php
-                            $hoje=new DateTime('now');
-                            
+                        $hoje = new DateTime('now');
+
                         ?>
-                        <input type="date" name="dia" value="<?php echo $hoje->format('Y-m-d');?>"class="form form-control" required>
-                       
+                        <input type="date" name="dia" value="<?php echo $hoje->format('Y-m-d'); ?>" class="form form-control" required>
+
                         <input type="submit" value="OK" class="input-group-text btn btn-success">
                     </div>
                 </form>
@@ -81,7 +78,7 @@
             </div>
         </div>
         <div class="col text-end">
-        <a href="control/sair.php" class="btn btn-sm btn-warning shadow  m-2">SAIR</a>
+            <a href="control/sair.php" class="btn btn-sm btn-warning shadow  m-2">SAIR</a>
         </div>
     </div>
 </div>

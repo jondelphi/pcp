@@ -59,13 +59,13 @@ $conn =ConexaoMysql::getConnectionMysql();
 </head>
 <body>
     <div class="container p-2 m-2">
-    <div class="container p-2 m-2" hx-trigger="load" hx-get="http://10.1.2.251/api2/getTotalColeta/<?php echo $_SESSION['pcpAPI']['diaapont']?>">
+          <div class="container p-2 m-2" hx-trigger="load" hx-get="http://10.1.2.251/api2/getTotalColeta/<?php echo $_SESSION['pcpAPI']['diaapont']?>">
         
         </div>
     <a href="apagaapontada.php" class="btn btn-danger">APAGA APONTADA</a><br>
     <a href="todosrequests.php" class="btn btn-warning m-2 p-2">Todos os requests</a>
     </div>
-  
+
     <div class="container p-2 m-2" hx-trigger="load" hx-get="http://10.1.2.251/api2/getColeta/<?php echo $_SESSION['pcpAPI']['diaapont']?>">
         
     </div>

@@ -30,7 +30,7 @@ $dados=$consulta->fetchALL(PDO::FETCH_ASSOC);
 foreach ($dados as $k) {
     
     $query = 'SELECT bip
-    FROM etiquetas WHERE serie ="' . $k['etiqueta'] . '"';
+    FROM etiquetas WHERE serie ="'. $k['etiqueta'] .'"';
     $procura = $Conexao2->prepare($query);
     $procura->execute();
     if($procura->rowCount()> 0){       
