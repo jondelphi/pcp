@@ -393,6 +393,7 @@ class ODF
                 <table class="table table-dark table-striped table-bordered">
                     <thead>
                         <tr>
+                            <th>Etiqueta</th>
                             <th>
                                 Código
                             </th>
@@ -417,6 +418,7 @@ class ODF
                         foreach($itens as $k){
                             ?>
                             <tr>
+                                <td><?php echo $_POST['busca']?></td>
                                 <td><?php echo $k['codigo']?></td>
                                 <td><?php echo $k['descri']?></td>
                                 <td><?php echo $k['linhamontagem']?></td>
@@ -437,7 +439,11 @@ class ODF
         }else{
             ?>
             <div class="container bg-dark text-bg-dark m-1 p-1">
-                <h6>Não está no banco de dados</h6>
+                <h6>
+                    <?php if(isset($_POST['busca'])){
+                        echo $_POST['busca']." - ";
+                    }?>
+                    Não está no banco de dados</h6>
             </div>
             <?php
         }

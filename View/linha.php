@@ -1,22 +1,15 @@
-<div class="container">
-<?php
-$linha=new Linha;
-$conn=ConexaoMysql::getConnectionMysql();
-?>
-<script>
-    function conEdita(link,linha){
-        var str ="Deseja editar a linha "+linha;
-        var v=confirm(str);
-        if (v==true) {
-            window.location.href=link;
-        }
+<style>
+    #linha{
+       display: flex;
+       gap: 10px;
+       align-content: center;
     }
-</script>
-<div class="container m-2 p-2">
-    <div class="container m-2 p-2">
-  <?php
-   $linha->MostraLinha($conn);
-   ?>  
+</style>
+<div id="linha">
+    <div>
+        teste
     </div>
-</div>
+    <div>
+        nova
+    </div>
 </div>

@@ -2,9 +2,9 @@
 class ConexaoIgor
 {
     private static $connection;
-    private static $host = "10.1.2.251";
+    private static $host = "10.1.1.103";
     private static $user = "root";
-    private static $senha = "fgbraslar";
+    private static $senha = "3GgSFHpeZDj3d7";
     private static $banco = "produtos_api";
 
     private function __construct()

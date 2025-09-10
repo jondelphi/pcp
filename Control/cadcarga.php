@@ -14,6 +14,12 @@ if ($_POST) {
     if(strlen($produto)==5){
         $produto="100".$produto;
     }
+    if(isset($_POST['observacao'])){
+        $observacao=$_POST['observacao'];
+    }
+    else{
+        $observacao="Nenhuma anotação";
+    }
 
     $classProduto=new Carga;
     $idproduto=$classProduto->idProduto($produto);
@@ -26,8 +32,8 @@ if ($_POST) {
 $conn=ConexaoMysql::getConnectionMysql();
 
 try {
-    $insert="INSERT INTO tbpedido(destino,datapedido,prioridade,iduser) 
-    VALUES('$carga','$bompara',$prioridade,$user)";  
+    $insert="INSERT INTO tbpedido(destino,datapedido,prioridade,iduser,observacao) 
+    VALUES('$carga','$bompara',$prioridade,$user,'$observacao')";  
    // echo $insert; 
    
     $insert=$conn->prepare($insert);

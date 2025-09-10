@@ -247,43 +247,43 @@ class Produto
         {
         
             switch ($hora) {
-                case $hora < '07:40:00':
+                case $hora < '07:30:00':
                     return 0;
                     break;
-                case $hora < '08:40:00':
+                case $hora < '08:30:00':
                     return 1;
                     break;
-                case $hora < '09:40:00':
+                case $hora < '09:30:00':
                     return 2;
                     break;
-                case $hora < '10:40':
+                case $hora < '10:30':
                     return 3;
                     break;
-                case $hora < '11:40':
+                case $hora < '11:30':
                     return 4;
                     break;
-                case $hora < '12:40':
+                case $hora < '12:30':
                     return 5;
                     break;
-                case $hora < '13:40':
+                case $hora < '13:30':
                     return 6;
                     break;
-                case $hora < '14:40':
+                case $hora < '14:30':
                     return 7;
                     break;
-                case $hora < '15:40':
+                case $hora < '15:30':
                     return 8;
                     break;
-                case $hora < '16:40':
+                case $hora < '16:30':
                     return 9;
                     break;
-                case $hora < '17:40':
+                case $hora < '17:30':
                     return 10;
                     break;
-                case $hora < '18:40':
+                case $hora < '18:30':
                     return 11;
                     break;
-                case $hora >= '18:40':
+                case $hora >= '18:30':
                     return 12;
                     break;
             }

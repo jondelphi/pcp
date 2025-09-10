@@ -1,3 +1,30 @@
+<?php
+$apaga= file_get_contents('http://10.1.2.251/api/apagaEstoque');
+sleep(4);
+ $curl = curl_init();
+
+curl_setopt_array($curl, [
+  CURLOPT_URL => "https://gateway.korp.com.br/flow/workflow/webhook/InformacoesEstoque?Status=A&Categoria=99&Familia=10000&Local=1",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "",
+  CURLOPT_HTTPHEADER => [
+    "Authorization: Basic bWFqR0JxclRlREZiRVVHeDpjS1ZUSWZRWDFINUpYd2UyMjM3UndRPT0=",
+    "User-Agent: insomnia/8.2.0"
+  ],
+]);
+sleep(2);
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl); 
+
+sleep(2);
+?>
 <div class="container">
     <div class="container p-2 m-2">
         <!-- formulario  CADASTRO-->
@@ -16,6 +43,11 @@
                     <input type="text" name="quantidade" class="form form-control" required>
                     <label for="quantidade" class="input-group-text">Prioridade</label>
                     <input type="number" name="prioridade" value="1" class="form form-control" required>
+                </div>
+                <div class="input-group input-group-sm p-1 m-1">
+                    <label for="observacao" class="input-group-text">Observação</label>
+                    <textarea name="observacao" id="observacao" class="form-control"></textarea>
+                   
                     <input type="submit" value="CADASTRA" class="btn btn-success">
 
                 </div>

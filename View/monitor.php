@@ -48,43 +48,43 @@ function monitor($conn)
                            
                         switch ($l['intervalo']) {
                             case 0:
-                                $entre = "06:00-07:40";
+                                $entre = "06:00-07:30";
                                 break;
                             case 1:
-                                $entre = "07:40-08:40";
+                                $entre = "07:30-08:30";
                                 break;
                             case 2:
-                                $entre = "08:41-09:40";
+                                $entre = "08:31-09:30";
                                 break;
                             case 3:
-                                $entre = "09:41-10:40";
+                                $entre = "09:31-10:30";
                                 break;
                             case 4:
-                                $entre = "10:41-11:40";
+                                $entre = "10:31-11:30";
                                 break;
                             case 5:
-                                $entre = "11:41-12:40";
+                                $entre = "11:31-12:30";
                                 break;
                             case 6:
-                                $entre = "12:41-13:40";
+                                $entre = "12:31-13:30";
                                 break;
                             case 7:
-                                $entre = "13:41-14:40";
+                                $entre = "13:31-14:30";
                                 break;
                             case 8:
-                                $entre = "14:41-15:40";
+                                $entre = "14:31-15:30";
                                 break;
                             case 9:
-                                $entre = "15:41-16:40";
+                                $entre = "15:31-16:30";
                                 break;
                             case 10:
-                                $entre = "16:41-17:40";
+                                $entre = "16:31-17:30";
                                 break;
                             case 11:
-                                $entre = "17:41-18:40";
+                                $entre = "17:31-18:30";
                                 break;
                             case 12:
-                                $entre = "Depois das 18:40";
+                                $entre = "Depois das 18:30";
                                 break;
                             default:
                                 $entre = "Fora do expediente";
@@ -95,7 +95,7 @@ function monitor($conn)
                         switch ($l['intervalo']) {
                             case 0:
                                 $inicio="06:00";
-                                $fim="07:40";
+                                $fim="07:30";
                               if ($almoco['intervalosaida']==0) {
                                 $fim=$almoco['saida'];
                               }
@@ -106,8 +106,8 @@ function monitor($conn)
                              break;
                             case 1:
                             
-                                $inicio="07:40";
-                                $fim="08:40";
+                                $inicio="07:30";
+                                $fim="08:30";
                               if ($almoco['intervalosaida']==1) {
                                 $fim=$almoco['saida'];
                               }
@@ -117,13 +117,13 @@ function monitor($conn)
                               if ($almoco['intervaloentrada']==1&&$almoco['intervalosaida']==1) {
                                 
                                  $inicio=$almoco['entrada'];;
-                                $fim="08:40";
+                                $fim="08:30";
                               }
                               $entre=$inicio."-".$fim;   
                                 break;
                             case 2:
-                                $inicio="08:41";
-                                $fim="09:40";
+                                $inicio="08:31";
+                                $fim="09:30";
                               if ($almoco['intervalosaida']==2) {
                                 $fim=$almoco['saida'];
                               }
@@ -132,16 +132,16 @@ function monitor($conn)
                               }
                               if ($almoco['intervaloentrada']==2&&$almoco['intervalosaida']==2) {
                                  $inicio=$almoco['entrada'];;
-                                $fim="09:40";
+                                $fim="09:30";
                               }
                               
                               $entre=$inicio."-".$fim;   
                                 break;
                             case 3:
                                
-                                $entre = "09:41-10:40";
-                                $inicio="09:41";
-                                $fim="10:40";
+                                $entre = "09:31-10:30";
+                                $inicio="09:31";
+                                $fim="10:30";
                               if ($almoco['intervalosaida']==3) {
                                 $fim=$almoco['saida'];
                               }
@@ -149,7 +149,7 @@ function monitor($conn)
                                 $inicio=$almoco['entrada'];
                               }
                               if ($almoco['intervaloentrada']==3&&$almoco['intervalosaida']==3) {
-                                $inicio='10:41';
+                                $inicio='10:31';
                                 $fim=$almoco['saida'];
                                 $entre=$inicio."-".$fim;   
                                 ?>
@@ -158,7 +158,7 @@ function monitor($conn)
                               </tr><tr>
                                 <?php
                                 $inicio=$almoco['entrada'];;
-                                $fim="11:40";
+                                $fim="11:30";
                                 $entre=$inicio."-".$fim;   
                                 ?>
                                    <td><?php echo $entre; ?></td>
@@ -170,9 +170,9 @@ function monitor($conn)
                               $entre=$inicio."-".$fim;   
                                 break;
                             case 4:
-                                $entre = "10:41-11:40";
-                                $inicio="10:41";
-                                $fim="11:40";
+                                $entre = "10:31-11:30";
+                                $inicio="10:31";
+                                $fim="11:30";
                               if ($almoco['intervalosaida']==4) {
                                 $fim=$almoco['saida'];
                               }
@@ -180,7 +180,7 @@ function monitor($conn)
                                 $inicio=$almoco['entrada'];
                               }
                               if ($almoco['intervaloentrada']==4&&$almoco['intervalosaida']==4) {
-                                $inicio='10:41';
+                                $inicio='10:31';
                                 $fim=$almoco['saida'];
                                 $entre=$inicio."-".$fim;   
                                 ?>
@@ -189,7 +189,7 @@ function monitor($conn)
                               </tr><tr>
                                 <?php
                                 $inicio=$almoco['entrada'];;
-                                $fim="11:40";
+                                $fim="11:30";
                                 $entre=$inicio."-".$fim;   
                                 ?>
                                    <td><?php echo $entre; ?></td>
@@ -201,9 +201,9 @@ function monitor($conn)
                               $entre=$inicio."-".$fim;   
                                 break;
                             case 5:
-                                $entre = "11:41-12:40";
-                                $inicio="11:41";
-                                $fim="12:40";
+                                $entre = "11:31-12:30";
+                                $inicio="11:31";
+                                $fim="12:30";
                               if ($almoco['intervalosaida']==5) {
                                 $fim=$almoco['saida'];
                               }
@@ -211,7 +211,7 @@ function monitor($conn)
                                 $inicio=$almoco['entrada'];
                               }
                               if ($almoco['intervaloentrada']==5&&$almoco['intervalosaida']==5) {
-                                $inicio='10:41';
+                                $inicio='10:31';
                                 $fim=$almoco['saida'];
                                 $entre=$inicio."-".$fim;   
                                 ?>
@@ -220,7 +220,7 @@ function monitor($conn)
                               </tr><tr>
                                 <?php
                                 $inicio=$almoco['entrada'];;
-                                $fim="11:40";
+                                $fim="11:30";
                                 $entre=$inicio."-".$fim;   
                                 ?>
                                    <td><?php echo $entre; ?></td>
@@ -232,10 +232,10 @@ function monitor($conn)
                               $entre=$inicio."-".$fim;   
                                 break;
                             case 6:
-                                $entre = "12:41-13:40";
+                                $entre = "12:31-13:30";
                               
-                                $inicio="12:41";
-                                $fim="13:40";
+                                $inicio="12:31";
+                                $fim="13:30";
                               if ($almoco['intervalosaida']==6) {
                                 $fim=$almoco['saida'];
                               }
@@ -243,7 +243,7 @@ function monitor($conn)
                                 $inicio=$almoco['entrada'];
                               }
                               if ($almoco['intervaloentrada']==6&&$almoco['intervalosaida']==6) {
-                                $inicio='10:41';
+                                $inicio='10:31';
                                 $fim=$almoco['saida'];
                                 $entre=$inicio."-".$fim;   
                                 ?>
@@ -252,7 +252,7 @@ function monitor($conn)
                               </tr><tr>
                                 <?php
                                 $inicio=$almoco['entrada'];;
-                                $fim="11:40";
+                                $fim="11:30";
                                 $entre=$inicio."-".$fim;   
                                 ?>
                                    <td><?php echo $entre; ?></td>
@@ -264,9 +264,9 @@ function monitor($conn)
                               $entre=$inicio."-".$fim;   
                                 break;
                             case 7:
-                                $entre = "13:41-14:40";
-                                $inicio="13:41";
-                                $fim="14:40";
+                                $entre = "13:31-14:30";
+                                $inicio="13:31";
+                                $fim="14:30";
                               if ($almoco['intervalosaida']==7) {
                                 $fim=$almoco['saida'];
                               }
@@ -274,7 +274,7 @@ function monitor($conn)
                                 $inicio=$almoco['entrada'];
                               }
                               if ($almoco['intervaloentrada']==7&&$almoco['intervalosaida']==7) {
-                                $inicio='10:41';
+                                $inicio='10:31';
                                 $fim=$almoco['saida'];
                                 $entre=$inicio."-".$fim;   
                                 ?>
@@ -283,7 +283,7 @@ function monitor($conn)
                               </tr><tr>
                                 <?php
                                 $inicio=$almoco['entrada'];;
-                                $fim="11:40";
+                                $fim="11:30";
                                 $entre=$inicio."-".$fim;   
                                 ?>
                                    <td><?php echo $entre; ?></td>
@@ -295,9 +295,9 @@ function monitor($conn)
                               $entre=$inicio."-".$fim;   
                                 break;
                             case 8:
-                                $entre = "14:41-15:40";
-                                $inicio="14:41";
-                                $fim="15:40";
+                                $entre = "14:31-15:30";
+                                $inicio="14:31";
+                                $fim="15:30";
                               if ($almoco['intervalosaida']==8) {
                                 $fim=$almoco['saida'];
                               }
@@ -306,21 +306,21 @@ function monitor($conn)
                               }
                               if ($almoco['intervaloentrada']==8&&$almoco['intervalosaida']==8) {
                                  $inicio=$almoco['entrada'];;
-                                $fim="10:40";
+                                $fim="10:30";
                               }
                               $entre=$inicio."-".$fim;   
                                 break;
                             case 9:
-                                $entre = "15:41-16:40";
+                                $entre = "15:31-16:30";
                                 break;
                             case 10:
-                                $entre = "16:41-17:40";
+                                $entre = "16:31-17:30";
                                 break;
                             case 11:
-                                $entre = "17:41-18:40";
+                                $entre = "17:31-18:30";
                                 break;
                             case 12:
-                                $entre = "Depois das 18:40";
+                                $entre = "Depois das 18:30";
                                 break;
                             default:
                                 $entre = "Fora do expediente";
