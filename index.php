@@ -334,7 +334,7 @@ startReading();
             // Emitir o beep
             document.getElementById('beepSound').play();
 
-            // A lógica da sua função aqui  
+            // A lógica da sua função aqui
             console.log('Função executada');
         }
         function para(){
