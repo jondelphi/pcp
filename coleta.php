@@ -59,13 +59,15 @@ $conn =ConexaoMysql::getConnectionMysql();
 </head>
 <body>
     <div class="container p-2 m-2">
-    <div class="container p-2 m-2" hx-trigger="load" hx-get="http://10.1.2.251/api2/getTotalColeta/<?php echo $_SESSION['pcpAPI']['diaapont']?>">
+          <div class="container p-2 m-2" hx-trigger="load" hx-get="http://10.1.2.251/api2/getTotalColeta/<?php echo $_SESSION['pcpAPI']['diaapont']?>">
         
         </div>
-    <a href="apagaapontada.php" class="btn btn-danger">APAGA APONTADA</a><br>
-    <a href="todosrequests.php" class="btn btn-warning m-2 p-2">Todos os requests</a>
+         <a href="apagaapontada.php" class="btn btn-danger">APAGA APONTADA</a><br>
+         <a href="todosrequests.php" class="btn btn-warning m-2 p-2">Todos os requests</a>
+  <!--   <button id="apagueapontada" onclick="apagaqualquer()" class="btn btn-danger">APAGA APONTADA</button><br>
+    <button id="bt_request" onclick="todosRequests()" class="btn btn-warning m-2 p-2">Todos os requests</button> -->
     </div>
-  
+
     <div class="container p-2 m-2" hx-trigger="load" hx-get="http://10.1.2.251/api2/getColeta/<?php echo $_SESSION['pcpAPI']['diaapont']?>">
         
     </div>
@@ -97,6 +99,29 @@ $conn =ConexaoMysql::getConnectionMysql();
     <script src="bootstrap/js/bootstrap.js"></script>
     <script src="bootstrap/js/bootstrap.bundle.js"></script>
     <script src="https://unpkg.com/htmx.org@2.0.0" integrity="sha384-wS5l5IKJBvK6sPTKa2WZ1js3d947pvWXbPJ1OmWfEuxLgeHcEbjUUA5i9V5ZkpCw" crossorigin="anonymous"></script>
+   <script>
+    async function todosRequests(){
+        const bt = document.getElementById('bt_request')
+        bt.disabled= true
+        const url = `http://10.1.2.251/api/requestKorp`
+        const fet = await fetch(url)
+        bt.disabled=false
+        await apagaqualquer()
+        window.location.reload()
+
+    }
+
+    async function apagaqualquer(){
+        const bt = document.getElementById('apagueapontada')
+        bt.disabled= true
+        const url = `http://10.1.2.251/api/apagaqualquer`
+        const fet = await fetch(url)
+        bt.disabled=false
+
+        alert('Apagadas as apontadas')
+
+    }
+   </script>
     <footer>
         <?php
         include("template/footer.php");

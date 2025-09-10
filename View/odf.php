@@ -34,6 +34,13 @@
             </fieldset>
         </form>
         <!-- formulario -->
+         <!-- $_SESSION['pcpAPI']['diaapont'] -->
+        <div class="container p-2 m-2">
+            <span class="alert alert-info" style="font-size: smaller;"><i class="bi bi-exclamation-circle-fill"></i>Total de Registros na Coleta: 
+          <strong id="quantos_coleta"></strong></span>
+         
+        
+        </div>
     </div>
     <div class="container p-2 m-2">
         <?php
@@ -41,5 +48,47 @@
         $odf = new ODF;
         $odf->mostraODF($conn,$_SESSION['pcpAPI']['sqlODF'],$_SESSION['pcpAPI']['filtro']);
         ?>
+    </div>
+    <div class="container">
+    <button class="btn btn-primary btn-sm" id="cdODF" onclick="coletas()"><i class="bi bi-wrench"></i>Atualiza ODF</button>
+        <script>
+            async function quantos_coleta(diahoje){
+                const strong = document.getElementById('quantos_coleta')
+                strong.innerHTML = ''
+                const url = `http://10.1.2.251/api/quantos_coleta/${diahoje}`
+                const busca = await fetch(url)
+                const dados = await busca.json()
+                strong.innerHTML = dados[0].total
+
+            }
+
+
+     async function coletas() {
+       const bt = document.getElementById('cdODF')
+       bt.disabled  = true; 
+    
+        const dia = "<?php echo $_SESSION['pcpAPI']['diaapont']; ?>";
+        const url = `http://10.1.2.251/api/cadodf/${dia}`;
+        
+        
+        try {
+            const response = await fetch(url);
+            if (response.ok) {
+                bt.disabled  = false
+                location.reload()
+            
+            } else {
+                alert('Erro ao atualizar ODFs');
+            }
+        } catch (error) {
+            console.error('Erro ao fazer a requisição:', error);
+            alert('Erro ao conectar com o servidor');
+        }
+    }
+quantos_coleta('<?php echo$_SESSION['pcpAPI']['diaapont'];?>')
+    setInterval(function() {
+    quantos_coleta('<?php echo $_SESSION['pcpAPI']['diaapont'];?>');
+}, 10000)
+  </script>
     </div>
 </div>

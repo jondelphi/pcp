@@ -77,9 +77,9 @@ class Carga
         try {
             $conn = ConexaoIgor::getConnectionIgor();
             $sql = "SELECT
-   SUM(quantidade) AS 'total'   
+   quantidade AS 'total'   
 FROM produtos
-WHERE CODIGO='$produto'";
+WHERE CODIGO='$produto' order by id desc limit 1";
             //echo $sql;
             $sql = $conn->prepare($sql);
             $sql->execute();
@@ -90,11 +90,10 @@ WHERE CODIGO='$produto'";
             //
 
         }
+
         return $total;
     }
-    public function TemCarga($produto, $carga)
-    {
-    }
+    public function TemCarga($produto, $carga) {}
 
 
     public function qtdPedido($id)
@@ -105,7 +104,7 @@ WHERE CODIGO='$produto'";
             $sql = "SELECT 
             tbcarga.quantidade as 'quantidade'
             from tbcarga
-            WHERE tbcarga.id=$id";
+            WHERE tbcarga.id=$id AND tbcarga.ativo>0";
 
             $sql = $conn->prepare($sql);
             $sql->execute();
@@ -174,14 +173,14 @@ WHERE CODIGO='$produto'";
         $fdia = $dia->format('Y-m-d');
         try {
             $conMysql = ConexaoMysql::getConnectionMysql();
-            $ConKorp = ConexaoKorp::getConnectionKorp();
+            
             $select = "SELECT 
             tbcarga.*,
             tbproduto.codigo as 'codigo',
             tbproduto.descricao as 'descricao'
             from tbcarga
             INNER JOIN tbproduto ON tbproduto.id= tbcarga.idproduto
-            WHERE bompara>='$fdia' 
+            WHERE bompara>='$fdia' and tbcarga.ativo>0
             ORDER BY tbcarga.bompara ASC";
 
             $q = $conMysql->prepare($select);
@@ -204,8 +203,8 @@ WHERE CODIGO='$produto'";
                          tbproduto.codigo,
                          tbcarga.quantidade                        
                          from tbcarga  
-                         INNER JOIN tbproduto ON tbcarga.idproduto=tbproduto.id                      
-                         WHERE bompara>='$fdia' ORDER BY  tbcarga.bompara ASC, tbcarga.carga ASC";
+                         INNER JOIN tbproduto ON tbcarga.idproduto=tbproduto.id  AND tbcarga.ativo>0                
+                         WHERE bompara>='$fdia' and tbcarga.ativo>0 ORDER BY  tbcarga.bompara ASC, tbcarga.carga ASC";
                             $j = $conMysql->prepare($sel);
                             $j->execute();
                             while ($m = $j->fetch(PDO::FETCH_ASSOC)) {
@@ -242,7 +241,7 @@ WHERE CODIGO='$produto'";
                             $sel = "SELECT 
                          tbcarga.carga                        
                          from tbcarga                        
-                         WHERE bompara>='$fdia' ORDER BY  tbcarga.bompara ASC, tbcarga.carga ASC";
+                         WHERE bompara>='$fdia' and tbcarga.ativo>0 ORDER BY  tbcarga.bompara ASC, tbcarga.carga ASC";
                             $j = $conMysql->prepare($sel);
                             $j->execute();
                             while ($m = $j->fetch(PDO::FETCH_ASSOC)) {
@@ -278,7 +277,7 @@ WHERE CODIGO='$produto'";
                    tbcarga
                INNER JOIN tbproduto ON tbproduto.id = tbcarga.idproduto
                WHERE
-                   bompara >= '$fdia'
+                   bompara >= '$fdia' and tbcarga.ativo>0
                GROUP BY
                    tbproduto.descricao
                    ORDER BY tbproduto.codigo ASC
@@ -381,15 +380,15 @@ WHERE CODIGO='$produto'";
 
     public function mostraCargas2()
     {
-        $totalfabricar=0;
+        $totalfabricar = 0;
         $numcolunas = 0;
         $dia = new DateTime($_SESSION['pcpAPI']['diaapont']);
         $fdia = $dia->format('Y-m-d');
         try {
             $conMysql = ConexaoMysql::getConnectionMysql();
-         
+
             $select = "SELECT  *  from tbpedido         
-            WHERE datapedido>='$fdia' 
+            WHERE datapedido>='$fdia' and   tbpedido.ativo =1
             ORDER BY datapedido ASC,prioridade ASC";
             $altera = false;
             $_SESSION['pcpAPI']['dataexporta'] = false;
@@ -398,7 +397,7 @@ WHERE CODIGO='$produto'";
                 $dia1 = $_SESSION['pcpAPI']['dia1'];
                 $dia2 = $_SESSION['pcpAPI']['dia2'];
                 $select = "SELECT  *  from tbpedido         
-                    WHERE datapedido BETWEEN '$dia1' and '$dia2' 
+                    WHERE datapedido BETWEEN '$dia1' and '$dia2' and  tbpedido.ativo =1
                     ORDER BY datapedido ASC,prioridade ASC";
 
                 $altera = true;
@@ -424,7 +423,7 @@ WHERE CODIGO='$produto'";
                                 <th rowspan="4" style="border: none;background-color:#fff   "></th>
                                 <?php
                                 $sel = "SELECT  *  from tbpedido         
-                            WHERE datapedido>='$fdia' 
+                            WHERE datapedido>='$fdia' and  tbpedido.ativo =1
                             ORDER BY datapedido ASC,prioridade ASC";
                                 if ($altera == true) {
                                     $sel = "SELECT  *  from tbpedido         
@@ -434,11 +433,13 @@ WHERE CODIGO='$produto'";
                                 $j = $conMysql->prepare($sel);
                                 $j->execute();
                                 $numpedidos = $j->rowCount();
-                                
+
                                 while ($m = $j->fetch(PDO::FETCH_ASSOC)) {
                                     $datapedido = new DateTime($m['datapedido']);
                                     $clcombina['dia'][] = $m['datapedido'];
                                     $clcombina['id'][] = $m['id'];
+                                    $pronto=$m['pronto'];
+                               
                                     if ($m['datapedido'] <> $diaatual) {
                                         if ($styleatual == $style2) {
                                             $styleatual = $style1;
@@ -478,7 +479,7 @@ WHERE CODIGO='$produto'";
                                 <?php
                                 $styleatual = $style1;
                                 $sel = "SELECT  *  from tbpedido         
-                            WHERE datapedido>='$fdia' 
+                            WHERE datapedido>='$fdia' and  tbpedido.ativo =1
                             ORDER BY datapedido ASC,prioridade ASC";
                                 if ($altera == true) {
                                     $sel = "SELECT  *  from tbpedido         
@@ -499,8 +500,24 @@ WHERE CODIGO='$produto'";
                                         }
                                     }
                                     $diaatual = $m['datapedido'];
+                                    $pronto=$m['pronto'];
                                 ?>
-                                    <th colspan="2" class="textovertical" <?php echo $styleatual; ?>><?php echo $m['destino']; ?></th>
+                                    <th colspan="2"  <?php echo $styleatual; ?>><span class="textovertical" title="<?php echo $m['observacao']; ?>">
+                                        <?php echo $m['destino']; ?></span>
+                                        <br>
+                                        <?php 
+                                        if($pronto=='N'){
+                                            ?>
+                                            <input type="checkbox" name="" id="pronto" class="form-check-input" onclick="mudapronto('S','<?php echo $m['id']; ?>')">
+                                            <?php
+                                        }else{
+                                            ?>
+                                            <input type="checkbox" name="" id="pronto" class="form-check-input" onclick="mudapronto('N','<?php echo $m['id']; ?>')" checked>
+                                            <?php
+                                        }
+                                        ?>
+                                        
+                                    </th>
                                 <?php
                                 } //fim do while clcombina
 
@@ -531,7 +548,7 @@ WHERE CODIGO='$produto'";
                                         </small>
 
                                     </td>
-                                    
+
 
                                 <?php
                                 }
@@ -539,12 +556,12 @@ WHERE CODIGO='$produto'";
                             </tr>
 
                             <!-- teste -->
-                           <tr>
+                            <tr>
                                 <?php
                                 $count = count($clcombina['dia']);
                                 $diaatual = '';
                                 $styleatual = $style1;
-                                $ttpedido=0;
+                                $ttpedido = 0;
                                 for ($i = 0; $i < $count; $i++) {
                                     if ($clcombina['dia'][$i] <> $diaatual) {
                                         if ($styleatual == $style2) {
@@ -561,22 +578,22 @@ WHERE CODIGO='$produto'";
 
                                             $somPedido = $this->calcularPedido($clcombina['id'][$i]);
                                             $ttpedido += $somPedido;
-                                            echo "R$ ".number_format($somPedido, 2, ',', '.');
+                                            echo "R$ " . number_format($somPedido, 2, ',', '.');
                                             ?>
                                         </small>
 
                                     </td>
-                                    
+
 
                                 <?php
                                 }
                                 ?>
-                                <td class="text-center small fw-bold" colspan="2"><?php echo "R$ ".number_format($ttpedido,2,',','.');?></td>
-                            </tr> 
-                             <!-- teste -->
-                            <>
-<td style="border-top:none;border-left:none;border-right: none;"> </td>
-<td style="border-top:none;border-left:none"> </td>
+                                <td class="text-center small fw-bold" colspan="2"><?php echo "R$ " . number_format($ttpedido, 2, ',', '.'); ?></td>
+                            </tr>
+                            <!-- teste -->
+                            
+                                <td style="border-top:none;border-left:none;border-right: none;"> </td>
+                                <td style="border-top:none;border-left:none"> </td>
 
                                 <?php
                                 $count = count($clcombina['dia']);
@@ -598,7 +615,7 @@ WHERE CODIGO='$produto'";
                                 }
                                 ?>
                                 <th><small>Fabricar</small></th>
-                            </tr>
+                                </tr>
                         </thead>
                         <tbody>
                             <?php
@@ -617,14 +634,14 @@ WHERE CODIGO='$produto'";
                         FROM
                             tbpedido
                         WHERE
-                            datapedido >= '$fdia'
+                            datapedido >= '$fdia' and  tbpedido.ativo =1
                     )ORDER BY
                     tbproduto.codigo ASC
     
                    ";
 
-if ($altera == true) {
-    $selprodutos = "SELECT DISTINCT
+                            if ($altera == true) {
+                                $selprodutos = "SELECT DISTINCT
     (tbproduto.codigo) AS 'codigo',
     tbproduto.descricao AS 'descricao',
     tbproduto.id AS 'idproduto'
@@ -638,10 +655,10 @@ if ($altera == true) {
     FROM
         tbpedido
 
-    WHERE datapedido between '$dia1' and '$dia2'
+    WHERE datapedido between '$dia1' and '$dia2'and  tbpedido.ativo =1
     )ORDER BY
     tbproduto.codigo ASC";
-}
+                            }
                             $selprodutos = $conMysql->prepare($selprodutos);
                             $selprodutos->execute();
                             while ($l2 = $selprodutos->fetch(PDO::FETCH_ASSOC)) {
@@ -679,8 +696,8 @@ if ($altera == true) {
                                                 $style = "background:#ADFF2F";
                                             }
                                             $diaf = new DateTime($clcombina['dia'][$i]);
-                                            $titulo=$diaf->format('d/m/Y') . " \n " . $clcombina['carga'][$i]." \n ".$l2['codigo']." \n ".$l2['descricao'];
-    
+                                            $titulo = $diaf->format('d/m/Y') . " \n " . $clcombina['carga'][$i] . " \n " . $l2['codigo'] . " \n " . $l2['descricao'];
+
                                     ?>
                                             <td class="text-end fw-bold" style="<?php echo $style; ?>"><small><span data-bs-toggle="tooltip" data-bs-placement="right" title="<?php echo $titulo; ?>"><?php echo number_format($qtd, 0, ',', '.'); ?></span></small></td>
                                             <td class="text-end fw-bold" <?php echo $styleatual ?>><small><?php
@@ -702,26 +719,26 @@ if ($altera == true) {
                                     if ($totalpedido > $estoque) {
 
                                         $fabricar = $totalpedido - $estoque;
-                                        $totalfabricar+=$fabricar;
+                                        $totalfabricar += $fabricar;
                                     } else {
                                         $fabricar = 0;
                                     }
                                     ?>
 
-                                    <td class="text-end fw-bold"><span><small title="<?php echo $l2['codigo']."\n".$l2['descricao'] ?>"><?php echo number_format($fabricar, 0, ',', '.'); ?></small></span></td>
+                                    <td class="text-end fw-bold"><span><small title="<?php echo $l2['codigo'] . "\n" . $l2['descricao'] ?>"><?php echo number_format($fabricar, 0, ',', '.'); ?></small></span></td>
 
                                 </tr>
                             <?php
                             } //fim do while selprodutos
-                                $numcolunas=$numcolunas+$numpedidos;
+                            $numcolunas = $numcolunas + $numpedidos;
                             ?>
                         </tbody>
-<tfoot>
-<tr>
-    <th colspan="<?php echo ($numcolunas*2)+2; ?>" class="text-end">Total</th>
-    <th><?php echo number_format($totalfabricar,0,',','.');?></th>
-</tr>
-</tfoot>
+                        <tfoot>
+                            <tr>
+                                <th colspan="<?php echo ($numcolunas * 2) + 2; ?>" class="text-end">Total</th>
+                                <th><?php echo number_format($totalfabricar, 0, ',', '.'); ?></th>
+                            </tr>
+                        </tfoot>
                     </table>
                 </div>
             <?php
@@ -764,9 +781,9 @@ if ($altera == true) {
         $altera = false;
         try {
             $conMysql = ConexaoMysql::getConnectionMysql();
-           
+
             $select = "SELECT  *  from tbpedido         
-            WHERE datapedido>='$fdia' 
+            WHERE datapedido>='$fdia' and  tbpedido.ativo =1
             ORDER BY datapedido ASC,prioridade ASC";
             if (isset($_SESSION['pcpAPI']['dataexporta'])) {
                 unset($_SESSION['pcpAPI']['dataexporta']);
@@ -774,7 +791,7 @@ if ($altera == true) {
                 $dia1 = $_SESSION['pcpAPI']['dia1'];
                 $dia2 = $_SESSION['pcpAPI']['dia2'];
                 $select = "SELECT  *  from tbpedido         
-                 WHERE datapedido between '$dia1' and '$dia2' 
+                 WHERE datapedido between '$dia1' and '$dia2' and  tbpedido.ativo =1
                  ORDER BY datapedido ASC,prioridade ASC";
             }
 
@@ -802,7 +819,7 @@ if ($altera == true) {
                             ORDER BY datapedido ASC,prioridade ASC";
                                 if ($altera == true) {
                                     $sel = "SELECT  *  from tbpedido         
-                                    WHERE datapedido between '$dia1' and '$dia2' 
+                                    WHERE datapedido between '$dia1' and '$dia2' and  tbpedido.ativo =1
                                     ORDER BY datapedido ASC,prioridade ASC";
                                 }
                                 $j = $conMysql->prepare($sel);
@@ -845,11 +862,11 @@ if ($altera == true) {
                                 <?php
                                 $styleatual = $style1;
                                 $sel = "SELECT  *  from tbpedido         
-                            WHERE datapedido>='$fdia' 
+                            WHERE datapedido>='$fdia'  and  tbpedido.ativo =1
                             ORDER BY datapedido ASC,prioridade ASC";
                                 if ($altera == true) {
                                     $sel = "SELECT  *  from tbpedido         
-                               WHERE datapedido between '$dia1' and '$dia2' 
+                               WHERE datapedido between '$dia1' and '$dia2' and  tbpedido.ativo =1
                                 ORDER BY datapedido ASC,prioridade ASC";
                                 }
                                 $j = $conMysql->prepare($sel);
@@ -900,7 +917,7 @@ if ($altera == true) {
                                 }
                                 ?>
                             </tr>
-                            
+
                             <tr>
 
                                 <?php
@@ -942,14 +959,14 @@ if ($altera == true) {
                         FROM
                             tbpedido
                         WHERE
-                            datapedido >= '$fdia'
+                            datapedido >= '$fdia' and  tbpedido.ativo =1
                     )ORDER BY
                     tbproduto.codigo ASC
     
                    ";
 
                             if ($altera == true) {
-                                        $selprodutos = "SELECT DISTINCT
+                                $selprodutos = "SELECT DISTINCT
                                         (tbproduto.codigo) AS 'codigo',
                                         tbproduto.descricao AS 'descricao',
                                         tbproduto.id AS 'idproduto'
@@ -963,11 +980,333 @@ if ($altera == true) {
                                         FROM
                                             tbpedido
                                  
-                                        WHERE datapedido between '$dia1' and '$dia2'
+                                        WHERE datapedido between '$dia1' and '$dia2' and  tbpedido.ativo =1
                                         )ORDER BY
                                         tbproduto.codigo ASC";
                             }
-                           
+
+                            $selprodutos = $conMysql->prepare($selprodutos);
+                            $selprodutos->execute();
+                            while ($l2 = $selprodutos->fetch(PDO::FETCH_ASSOC)) {
+                                $totalpedido = 0;
+                                $totalestoque = 0;
+                            ?>
+                                <tr>
+                                    <th style="min-width: fit-content;"><?php echo $l2['codigo'] ?></th>
+                                    <th style="min-width:300px"><?php echo $l2['descricao'] ?></th>
+                                    <?php
+                                    $estoque = $this->qtdEstoque($l2['codigo']);
+                                    $totalestoque = $estoque;
+                                    $count = count($clcombina['id']);
+                                    // busca quantidade de produtos 
+                                    $diaatual = '';
+                                    $styleatual = $style1;
+                                    for ($i = 0; $i < $count; $i++) {
+                                        $qtd = $this->quantosprodutospedido($l2['idproduto'], $clcombina['id'][$i]);
+
+                                        $totalpedido += $qtd;
+                                        if ($clcombina['dia'][$i] <> $diaatual) {
+                                            if ($styleatual == $style2) {
+                                                $styleatual = $style1;
+                                            } else {
+                                                $styleatual = $style2;
+                                            }
+                                        }
+                                        $diaatual = $clcombina['dia'][$i];
+
+                                        if ($qtd > 0) {
+                                            if ($qtd > $totalestoque) {
+                                                $style = "background:#FA8072";
+                                            } else {
+                                                $style = "background:#ADFF2F";
+                                            }
+                                            $diaf = new DateTime($clcombina['dia'][$i]);
+
+                                    ?>
+                                            <td class="text-end fw-bold" style="<?php echo $style; ?>"><span data-bs-toggle="tooltip" data-bs-placement="right" title="<?php echo $diaf->format('d/m/Y') . "&#013;" . $clcombina['carga'][$i]; ?>"><?php echo number_format($qtd, 0, ',', '.'); ?></span></td>
+                                            <td class="text-end fw-bold" <?php echo $styleatual ?>><?php
+                                                                                                    if ($totalestoque < 0) {
+                                                                                                        echo number_format(0, 0, ',', '.');
+                                                                                                    } else {
+                                                                                                        echo number_format($totalestoque, 0, ',', '.');
+                                                                                                    } ?></td>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <td class="text-center fw-bold" colspan="2" <?php echo $styleatual ?>>--</td>
+
+                                    <?php
+                                        }
+                                        $totalestoque -= $qtd;
+                                    }
+
+                                    if ($totalpedido > $estoque) {
+
+                                        $fabricar = $totalpedido - $estoque;
+                                    } else {
+                                        $fabricar = 0;
+                                    }
+                                    ?>
+                                    <td class="text-end fw-bold"><?php echo number_format($fabricar, 0, ',', '.'); ?></td>
+
+                                </tr>
+                            <?php
+                            } //fim do while selprodutos
+
+                            ?>
+                        </tbody>
+
+                    </table>
+                </div>
+            <?php
+            } //fim do if
+        } catch (PDOException $e) {
+            //
+        }
+    }
+    public function calcularPedido($idpedido)
+    {
+        $con = ConexaoMysql::getConnectionMysql();
+        // Query para obter os itens do pedido junto com os valores dos produtos
+        $query = "
+            SELECT i.quantidade, p.valor
+            FROM tbitempedido i
+            JOIN tbproduto p ON i.idproduto = p.id
+            WHERE i.idpedido = {$idpedido}
+        ";
+
+        $soma = 0;
+
+        $stmt = $con->prepare($query);
+
+        // Executar a consulta
+        $stmt->execute();
+
+
+
+        $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        foreach ($row as  $k) {
+            $soma += $k['quantidade'] * $k['valor'];
+        }
+
+
+        return $soma;
+    }
+
+
+    public function mostraCargas4()
+    {
+        $dia = new DateTime('now');
+        $dia2 = clone $dia; // É importante clonar para não modificar o objeto original
+        $dia2->add(new DateInterval('P5D')); // 'P5D' significa um período de 5 dias
+        $fdia = $dia->format('Y-m-d');
+        $dia1 = $dia->format('Y-m-d');
+        $dia2 = $dia2->format('Y-m-d');
+        $altera = false;
+        try {
+            $conMysql = ConexaoMysql::getConnectionMysql();
+
+            $select = "SELECT  *  from tbpedido         
+            WHERE datapedido>='$fdia' and  tbpedido.ativo =1
+            ORDER BY datapedido ASC,prioridade ASC";
+            
+                $altera = true;
+       
+                $select = "SELECT  *  from tbpedido         
+                 WHERE datapedido between '$dia1' and '$dia2' and  tbpedido.ativo =1
+                 ORDER BY datapedido ASC,prioridade ASC";
+            
+
+            $q = $conMysql->prepare($select);
+            $q->execute();
+            if ($q->rowCount() <> 0) {
+
+                $clcombina = array();
+                $i = 0;
+                $style2 = "style='background:#ccc'";
+                $style1 = "style='background:#fff'";
+                $styleatual = "";
+                $diaatual = "";
+            ?>
+
+                <div id="exporta" class="m-2 p-2 small">
+                    <table class="tabelaCarga">
+                        <thead class="text-center">
+                            <tr class="small">
+                                <th rowspan="4" style="border: none;background-color:#fff   "></th>
+                                <th rowspan="4" style="border: none;background-color:#fff   "></th>
+                                <?php
+                                $sel = "SELECT  *  from tbpedido         
+                            WHERE datapedido>='$fdia' 
+                            ORDER BY datapedido ASC,prioridade ASC";
+                                if ($altera == true) {
+                                    $sel = "SELECT  *  from tbpedido         
+                                    WHERE datapedido between '$dia1' and '$dia2' and  tbpedido.ativo =1
+                                    ORDER BY datapedido ASC,prioridade ASC";
+                                }
+                                $j = $conMysql->prepare($sel);
+                                $j->execute();
+                                while ($m = $j->fetch(PDO::FETCH_ASSOC)) {
+                                    $datapedido = new DateTime($m['datapedido']);
+                                    $clcombina['dia'][] = $m['datapedido'];
+                                    $clcombina['id'][] = $m['id'];
+                                    if ($m['datapedido'] <> $diaatual) {
+                                        if ($styleatual == $style2) {
+                                            $styleatual = $style1;
+                                        } else {
+                                            $styleatual = $style2;
+                                        }
+                                        $diaatual = $m['datapedido'];
+                                    }
+                                ?>
+                                    <th colspan="2" <?php echo $styleatual; ?>>
+                                        <div class="input-group input-group-sm">
+                                            <?php
+                                            $edita = "Control/editacarga.php?id=" . $m['id'];
+                                            $apaga = "Control/apagacarga.php?id=" . $m['id'];
+                                            ?>
+
+                                        </div>
+                                        <?php
+
+                                        echo $datapedido->format('d/m/y'); ?>
+
+
+
+                                    </th>
+                                <?php
+                                } //fim do while bom para
+                                ?>
+                                <th rowspan="2" style="border: none;background-color:#fff   "></th>
+                            </tr>
+
+                            <tr>
+                                <?php
+                                $styleatual = $style1;
+                                $sel = "SELECT  *  from tbpedido         
+                            WHERE datapedido>='$fdia' 
+                            ORDER BY datapedido ASC,prioridade ASC";
+                                if ($altera == true) {
+                                    $sel = "SELECT  *  from tbpedido         
+                               WHERE datapedido between '$dia1' and '$dia2' and  tbpedido.ativo =1
+                                ORDER BY datapedido ASC,prioridade ASC";
+                                }
+                                $j = $conMysql->prepare($sel);
+                                $j->execute();
+                                $diaatual = '';
+                                while ($m = $j->fetch(PDO::FETCH_ASSOC)) {
+                                    $clcombina['carga'][] = $m['destino'];
+                                                                            if ($m['datapedido'] <> $diaatual) {
+if ($styleatual == $style2) {
+                                            $styleatual = $style1;
+                                        } else {
+                                            $styleatual = $style2;
+                                        }
+                                    }
+                                    $diaatual = $m['datapedido'];
+                                ?>
+                                    <th colspan="2" class="textovertical" <?php echo $styleatual; ?>><?php echo $m['destino']; ?></th>
+                                <?php
+                                } //fim do while clcombina
+
+                                ?>
+                            </tr>
+                            <tr>
+                                <?php
+                                $count = count($clcombina['dia']);
+                                $diaatual = '';
+                                $styleatual = $style1;
+                                for ($i = 0; $i < $count; $i++) {
+                                    if ($clcombina['dia'][$i] <> $diaatual) {
+                                        if ($styleatual == $style2) {
+                                            $styleatual = $style1;
+                                        } else {
+                                            $styleatual = $style2;
+                                        }
+                                    }
+                                    $diaatual = $clcombina['dia'][$i];
+                                ?>
+                                    <td class="text-center fw-bold" colspan="2" <?php echo $styleatual ?>>
+                                        <?php
+
+                                        $total = $this->somapedido($clcombina['id'][$i]);
+                                        echo number_format($total, 0, ',', '.');
+                                        ?>
+
+                                    </td>
+
+                                <?php
+                                }
+                                ?>
+                            </tr>
+
+                            <tr>
+
+                                <?php
+                                $count = count($clcombina['dia']);
+                                $diaatual = '';
+                                $styleatual = $style1;
+                                for ($i = 0; $i < $count; $i++) {
+                                    if ($clcombina['dia'][$i] <> $diaatual) {
+                                        if ($styleatual == $style2) {
+                                            $styleatual = $style1;
+                                        } else {
+                                            $styleatual = $style2;
+                                        }
+                                    }
+                                    $diaatual = $clcombina['dia'][$i];
+                                ?>
+                                    <td class="text-center fw-bold" <?php echo $styleatual ?>>C</td>
+                                    <td class="text-center fw-bold" <?php echo $styleatual ?>>E</td>
+                                <?php
+                                }
+                                ?>
+                                <th>Fabricar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            //selecionando linha do produto
+                            $selprodutos = "SELECT DISTINCT
+                        (tbproduto.codigo) AS 'codigo',
+                        tbproduto.descricao AS 'descricao',
+                        tbproduto.id AS 'idproduto'
+                    FROM
+                        tbitempedido
+                    INNER JOIN tbproduto ON tbproduto.id = tbitempedido.idproduto
+                    WHERE
+                        tbitempedido.idpedido IN(
+                        SELECT
+                            id
+                        FROM
+                            tbpedido
+                        WHERE
+                            datapedido >= '$fdia' and  tbpedido.ativo =1
+                    )ORDER BY
+                    tbproduto.codigo ASC
+    
+                   ";
+
+                            if ($altera == true) {
+                                $selprodutos = "SELECT DISTINCT
+                                        (tbproduto.codigo) AS 'codigo',
+                                        tbproduto.descricao AS 'descricao',
+                                        tbproduto.id AS 'idproduto'
+                                        FROM
+                                        tbitempedido
+                                        INNER JOIN tbproduto ON tbproduto.id = tbitempedido.idproduto
+                                        WHERE
+                                        tbitempedido.idpedido IN(
+                                        SELECT
+                                            id
+                                        FROM
+                                            tbpedido
+                                 
+                                        WHERE datapedido between '$dia1' and '$dia2' and  tbpedido.ativo =1
+                                        )ORDER BY
+                                        tbproduto.codigo ASC";
+                            }
+
                             $selprodutos = $conMysql->prepare($selprodutos);
                             $selprodutos->execute();
                             while ($l2 = $selprodutos->fetch(PDO::FETCH_ASSOC)) {
@@ -1047,34 +1386,11 @@ if ($altera == true) {
             //
         }
     }
-     public function calcularPedido($idpedido) {
-        $con = ConexaoMysql::getConnectionMysql();
-        // Query para obter os itens do pedido junto com os valores dos produtos
-        $query = "
-            SELECT i.quantidade, p.valor
-            FROM tbitempedido i
-            JOIN tbproduto p ON i.idproduto = p.id
-            WHERE i.idpedido = {$idpedido}
-        ";
-  
-     $soma = 0;
-       
-      $stmt = $con->prepare($query);
-       
-            // Executar a consulta
-            $stmt->execute();
-    
-
-           
-             $row = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($row as  $k){
-                $soma += $k['quantidade'] * $k['valor'];  
-            } 
-             
-
-    return $soma;
-     
-    }    
-    
 }
 ?>
+
+<script>
+    function mudapronto(pronto, id) {
+        window.location.href = "Control/mudapronto.php?pronto=" + pronto + "&id=" + id;
+    }
+    </script>
